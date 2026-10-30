@@ -10,7 +10,8 @@ import {
   AlertCircle, 
   Sparkles, 
   CheckCircle,
-  RefreshCw
+  Gavel,
+  ChevronDown
 } from 'lucide-react';
 import { getCase, discoverClue, requestHint } from '../api/client';
 import SuspectCard from '../components/SuspectCard';
@@ -37,13 +38,27 @@ export default function InvestigationPage() {
   // Notification toast
   const [toastMessage, setToastMessage] = useState(null);
 
+  // Scroll-Linked reading progress state
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        const currentProgress = (window.scrollY / totalScroll) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const fetchCaseData = async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await getCase(id);
       if (res?.case) {
-        // If case is already completed, forward to results
         if (res.case.status !== 'active') {
           navigate(`/cases/${id}/results`, { replace: true });
           return;
@@ -71,7 +86,6 @@ export default function InvestigationPage() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Handle Clue Discovery
   const handleDiscoverClue = async (clueId) => {
     try {
       setDiscoveringClueId(clueId);
@@ -99,7 +113,6 @@ export default function InvestigationPage() {
     }
   };
 
-  // Handle Hint Request
   const handleRequestHint = async () => {
     try {
       setIsRequestingHint(true);
@@ -149,38 +162,35 @@ export default function InvestigationPage() {
 
   const discoveredCount = mysteryCase.clues.filter(c => c.isDiscovered).length;
   const hintsUsedCount = mysteryCase.hints.filter(h => h.isUsed).length;
+  const clueProgressPct = Math.round((discoveredCount / mysteryCase.clues.length) * 100);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 animate-fade-in">
+    <div className="relative min-h-screen">
       
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-200 text-xs font-mono shadow-2xl flex items-center gap-2 animate-slide-up">
-          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      {/* 1. SCROLL-LINKED MOTION: Top Viewport Reading / Case Progress Bar */}
+      <div className="fixed top-16 left-0 right-0 h-1 z-50 bg-slate-900/60 overflow-hidden">
+        <div 
+          className="h-full bg-gradient-to-r from-amber-500 via-cyan-400 to-emerald-400 transition-all duration-150"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
 
-      {/* Case Header & Stats Banner */}
-      <div className="noir-card p-6 border-slate-800">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      {/* 2. PIN / STICKY INVESTIGATION HUD: Holds Score & Action Bar in View */}
+      <aside className="sticky top-16 z-40 bg-noir-950/85 backdrop-blur-md border-b border-slate-800/80 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
           
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-semibold">
-                ACTIVE CASE FILE
-              </span>
-              <span className="text-[11px] font-mono text-slate-400">
-                ID: {mysteryCase._id?.substring(0, 8)}...
-              </span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight">
+          <div className="flex items-center gap-2 truncate">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="text-slate-300 font-semibold truncate max-w-[200px] sm:max-w-xs">
               {mysteryCase.title}
-            </h1>
+            </span>
+            <span className="text-slate-500 hidden md:inline">|</span>
+            <span className="text-amber-400/90 hidden md:inline">
+              {clueProgressPct}% Clues Examined
+            </span>
           </div>
 
-          {/* Score & Actions */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <ScoreBadge
               score={mysteryCase.score}
               difficulty={mysteryCase.difficulty}
@@ -191,107 +201,174 @@ export default function InvestigationPage() {
 
             <button
               onClick={() => setIsHintModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 text-amber-400 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors"
+              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-amber-400 text-[11px] font-mono flex items-center gap-1 transition-colors"
             >
-              <HelpCircle className="w-4 h-4" />
-              <span>Precinct Hints ({mysteryCase.hints.length - hintsUsedCount} left)</span>
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Hints</span>
+              <span>({mysteryCase.hints.length - hintsUsedCount})</span>
+            </button>
+
+            <button
+              onClick={() => navigate(`/cases/${id}/accuse`)}
+              className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-[11px] flex items-center gap-1.5 shadow-md shadow-red-600/20 active:scale-95 transition-all"
+            >
+              <Gavel className="w-3.5 h-3.5" />
+              <span>Accuse</span>
             </button>
           </div>
 
         </div>
-      </div>
+      </aside>
 
-      {/* Case Incident Briefing */}
-      <div className="noir-card p-6 sm:p-7 border-slate-800 bg-slate-900/60">
-        <div className="flex items-center gap-2 text-xs font-mono uppercase font-bold text-amber-400 mb-3">
-          <FileText className="w-4 h-4" />
-          <span>Incident Overview & Briefing</span>
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+        
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-200 text-xs font-mono shadow-2xl flex items-center gap-2 animate-slide-up">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+
+        {/* Case Header & Story Briefing */}
+        <div className="noir-card p-6 sm:p-8 border-slate-800 relative overflow-hidden">
+          
+          {/* Depth / Parallax Accent Glow */}
+          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-amber-500/5 blur-3xl pointer-events-none ambient-float" />
+          
+          <div className="relative space-y-4">
+            <div className="flex items-center gap-2 text-xs font-mono">
+              <span className="px-2.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-semibold uppercase">
+                ACTIVE CASE FILE
+              </span>
+              <span className="text-slate-500">
+                CASE #{mysteryCase._id?.substring(0, 8)}
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+              {mysteryCase.title}
+            </h1>
+
+            {/* Evidence Examination Progress Bar */}
+            <div className="space-y-1.5 pt-2">
+              <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>Crime Scene Evidence Uncovered: {discoveredCount} of {mysteryCase.clues.length}</span>
+                <span className="text-amber-400 font-bold">{clueProgressPct}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-slate-950 border border-slate-800 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-amber-500 to-cyan-400 transition-all duration-500 rounded-full"
+                  style={{ width: `${clueProgressPct}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800/80">
+              <div className="flex items-center gap-2 text-xs font-mono uppercase font-bold text-amber-400 mb-2">
+                <FileText className="w-4 h-4" />
+                <span>Incident Briefing</span>
+              </div>
+              <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-sans whitespace-pre-line bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                {mysteryCase.story}
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-sans whitespace-pre-line">
-          {mysteryCase.story}
-        </p>
-      </div>
 
-      {/* Suspects Lineup */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-amber-400" />
-            <h2 className="text-xl font-bold text-slate-100">Suspect Roster</h2>
-            <span className="text-xs font-mono text-slate-400">
-              ({mysteryCase.suspects.length} Persons of Interest)
+        {/* 3. SCROLL TRIGGER: Suspects Lineup Grid with Staggered Entrance */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-amber-400" />
+              <h2 className="text-xl font-bold text-slate-100">Suspect Roster</h2>
+              <span className="text-xs font-mono text-slate-400">
+                ({mysteryCase.suspects.length} Persons of Interest)
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 font-mono hidden sm:block">
+              Inspect alibis and examine motives
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {mysteryCase.suspects.map((suspect, idx) => (
+              <div 
+                key={suspect.id}
+                className="reveal-item"
+                style={{ animationDelay: `${idx * 80}ms` }}
+              >
+                <SuspectCard suspect={suspect} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 4. SCROLL TRIGGER: Crime Scene Clues Board with Staggered Entrance */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Search className="w-5 h-5 text-cyan-400" />
+              <h2 className="text-xl font-bold text-slate-100">Crime Scene Evidence</h2>
+              <span className="text-xs font-mono text-cyan-400">
+                ({discoveredCount} of {mysteryCase.clues.length} Discovered)
+              </span>
+            </div>
+            <span className="text-xs font-mono text-slate-400 hidden sm:block">
+              Each discovered clue awards +5 points
             </span>
           </div>
-          <p className="text-xs text-slate-400 font-mono hidden sm:block">
-            Inspect statements & secret motives
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {mysteryCase.clues.map((clue, idx) => (
+              <div 
+                key={clue.id}
+                className="reveal-item"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                <ClueCard
+                  clue={clue}
+                  onDiscover={handleDiscoverClue}
+                  isDiscovering={discoveringClueId === clue.id}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Final Accusation CTA Banner */}
+        <div className="noir-card p-6 sm:p-8 border-amber-500/30 bg-gradient-to-r from-amber-950/30 via-slate-900 to-amber-950/20 text-center space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
+            <ShieldAlert className="w-6 h-6" />
+          </div>
+          <h3 className="text-2xl font-bold text-slate-100">
+            Ready to Indict the Perpetrator?
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+            Review your gathered evidence. Once you step into the judicial chamber, your indictment is final.
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {mysteryCase.suspects.map((suspect) => (
-            <SuspectCard key={suspect.id} suspect={suspect} />
-          ))}
-        </div>
-      </div>
-
-      {/* Crime Scene Clues Board */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Search className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-xl font-bold text-slate-100">Crime Scene Evidence</h2>
-            <span className="text-xs font-mono text-cyan-400">
-              ({discoveredCount} of {mysteryCase.clues.length} Discovered)
-            </span>
+          <div className="pt-2">
+            <button
+              onClick={() => navigate(`/cases/${id}/accuse`)}
+              className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base inline-flex items-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+            >
+              <span>Step into the Accusation Room</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
-          <span className="text-xs font-mono text-slate-400 hidden sm:block">
-            Each discovered clue awards +5 points
-          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {mysteryCase.clues.map((clue) => (
-            <ClueCard
-              key={clue.id}
-              clue={clue}
-              onDiscover={handleDiscoverClue}
-              isDiscovering={discoveringClueId === clue.id}
-            />
-          ))}
-        </div>
+        {/* Hint Modal */}
+        <HintModal
+          isOpen={isHintModalOpen}
+          onClose={() => setIsHintModalOpen(false)}
+          hints={mysteryCase.hints}
+          onRequestHint={handleRequestHint}
+          isRequesting={isRequestingHint}
+        />
+
       </div>
-
-      {/* Accusation CTA Banner */}
-      <div className="noir-card p-6 sm:p-8 border-amber-500/30 bg-gradient-to-r from-amber-950/30 via-slate-900 to-amber-950/20 text-center space-y-4">
-        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
-          <ShieldAlert className="w-6 h-6" />
-        </div>
-        <h3 className="text-2xl font-bold text-slate-100">
-          Ready to Name the Perpetrator?
-        </h3>
-        <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-          Review your evidence carefully. Once you step into the interrogation room to submit your formal indictment, your verdict will be evaluated and the case will conclude.
-        </p>
-        <div className="pt-2">
-          <button
-            onClick={() => navigate(`/cases/${id}/accuse`)}
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base inline-flex items-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
-          >
-            <span>Proceed to Formal Accusation</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Hint Modal */}
-      <HintModal
-        isOpen={isHintModalOpen}
-        onClose={() => setIsHintModalOpen(false)}
-        hints={mysteryCase.hints}
-        onRequestHint={handleRequestHint}
-        isRequesting={isRequestingHint}
-      />
-
     </div>
   );
 }

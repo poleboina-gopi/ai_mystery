@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { 
   ShieldAlert, 
@@ -7,7 +7,12 @@ import {
   AlertTriangle, 
   CheckCircle, 
   HelpCircle,
-  FileQuestion
+  FileQuestion,
+  ChevronLeft,
+  ChevronRight,
+  LayoutGrid,
+  SlidersHorizontal,
+  Sparkles
 } from 'lucide-react';
 import { getCase, submitAccusation } from '../api/client';
 import SuspectCard from '../components/SuspectCard';
@@ -25,6 +30,10 @@ export default function AccusationPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
+  // Lineup view mode: 'lineup' (horizontal scroll) vs 'grid'
+  const [viewMode, setViewMode] = useState('lineup');
+  const scrollContainerRef = useRef(null);
+
   useEffect(() => {
     getCase(id)
       .then(res => {
@@ -41,6 +50,16 @@ export default function AccusationPage() {
       })
       .finally(() => setLoading(false));
   }, [id, navigate]);
+
+  const scrollLineup = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 320;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,42 +143,129 @@ export default function AccusationPage() {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
-        {/* Step 1: Suspect Selection Grid */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-xs uppercase font-mono font-bold tracking-wider text-slate-300">
-              1. Designate Prime Suspect (Click to select)
-            </label>
-            {selectedSuspect && (
-              <span className="text-xs font-mono text-amber-400 font-semibold">
-                Accused: {selectedSuspect.name}
-              </span>
-            )}
+        {/* Step 1: Suspect Selection with Horizontal Lineup / Grid Toggle */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <label className="text-xs uppercase font-mono font-bold tracking-wider text-slate-300 block">
+                1. Select Perpetrator from the Lineup
+              </label>
+              {selectedSuspect ? (
+                <span className="text-xs font-mono text-amber-400 font-semibold flex items-center gap-1 mt-0.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  Primary Indictment Target: <strong className="text-amber-300">{selectedSuspect.name}</strong> ({selectedSuspect.role})
+                </span>
+              ) : (
+                <span className="text-xs font-mono text-slate-500 block mt-0.5">
+                  Click a suspect card below to mark as the prime perpetrator
+                </span>
+              )}
+            </div>
+
+            {/* View Mode Toggle & Horizontal Scroll Buttons */}
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <div className="flex items-center rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-xs font-mono">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('lineup')}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors ${
+                    viewMode === 'lineup' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                  title="Police Lineup (Horizontal Scroll)"
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <span>Lineup</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('grid')}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors ${
+                    viewMode === 'grid' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                  title="Dossier Grid"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Grid</span>
+                </button>
+              </div>
+
+              {viewMode === 'lineup' && (
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => scrollLineup('left')}
+                    className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-amber-400 hover:border-slate-700 transition-colors"
+                    title="Scroll Left"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollLineup('right')}
+                    className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-amber-400 hover:border-slate-700 transition-colors"
+                    title="Scroll Right"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {mysteryCase.suspects.map((suspect) => (
-              <SuspectCard
-                key={suspect.id}
-                suspect={suspect}
-                selectable={true}
-                selected={selectedSuspectId === suspect.id}
-                onSelect={(sId) => setSelectedSuspectId(sId)}
-              />
-            ))}
-          </div>
+          {/* 4. SIDEWAYS MOVEMENT / HORIZONTAL POLICE LINEUP */}
+          {viewMode === 'lineup' ? (
+            <div className="relative rounded-2xl border border-slate-800/80 p-4 sm:p-6 lineup-wall shadow-2xl overflow-hidden">
+              <div className="absolute top-2 left-4 text-[10px] font-mono text-slate-600 uppercase tracking-widest pointer-events-none">
+                PRECINCT POLICE LINEUP • HEIGHT CALIBRATION
+              </div>
+
+              <div 
+                ref={scrollContainerRef}
+                className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pt-6 pb-2 no-scrollbar scroll-smooth"
+              >
+                {mysteryCase.suspects.map((suspect, idx) => (
+                  <div 
+                    key={suspect.id} 
+                    className="w-[280px] sm:w-[320px] shrink-0 snap-center transition-transform duration-200"
+                  >
+                    <div className="text-[10px] font-mono text-center text-slate-500 mb-2">
+                      SUSPECT #{idx + 1}
+                    </div>
+                    <SuspectCard
+                      suspect={suspect}
+                      selectable={true}
+                      selected={selectedSuspectId === suspect.id}
+                      onSelect={(sId) => setSelectedSuspectId(sId)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {mysteryCase.suspects.map((suspect) => (
+                <SuspectCard
+                  key={suspect.id}
+                  suspect={suspect}
+                  selectable={true}
+                  selected={selectedSuspectId === suspect.id}
+                  onSelect={(sId) => setSelectedSuspectId(sId)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Step 2: Evidence Deductive Theory */}
         <div className="space-y-3">
           <label className="text-xs uppercase font-mono font-bold tracking-wider text-slate-300 block">
-            2. Detective's Theory & Reasoning (Optional)
+            2. Detective's Theory & Decisive Proof (Optional)
           </label>
           <textarea
             value={deduction}
             onChange={(e) => setDeduction(e.target.value)}
             rows={3}
-            placeholder="Document how the evidence breaks their alibi and proves their motive..."
+            placeholder="Document how the discovered forensic clues break their alibi..."
             className="w-full bg-slate-950/70 border border-slate-800 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-sans leading-relaxed"
           />
         </div>

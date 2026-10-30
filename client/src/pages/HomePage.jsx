@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Sparkles, Search, Award, HelpCircle, ArrowRight, CheckCircle2, ChevronRight, Terminal } from 'lucide-react';
+import { Shield, Sparkles, Search, Award, HelpCircle, ArrowRight, CheckCircle2, ChevronRight, Terminal, SlidersHorizontal } from 'lucide-react';
 import { MYSTERY_PRESETS, DIFFICULTY_CONFIG } from '../utils/presets';
 import { listRecentCases } from '../api/client';
 
@@ -18,8 +18,12 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 animate-fade-in">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-24 animate-fade-in overflow-hidden">
       
+      {/* Depth Parallax Ambient Background Elements */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none ambient-float" />
+      <div className="absolute top-96 -left-32 w-[350px] h-[350px] bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none" />
+
       {/* Hero Section */}
       <div className="relative text-center max-w-3xl mx-auto space-y-6">
         
@@ -74,8 +78,8 @@ export default function HomePage() {
 
       </div>
 
-      {/* 3-Step Gameplay Loop */}
-      <div id="rules" className="space-y-8">
+      {/* 3-Step Gameplay Loop (Staggered Scroll Reveals) */}
+      <div id="rules" className="space-y-8 relative">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">
             The Detective Protocol
@@ -88,7 +92,10 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Step 1 */}
-          <div className="noir-card p-6 space-y-3 relative overflow-hidden group">
+          <div 
+            className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
+            style={{ animationDelay: '100ms' }}
+          >
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-mono font-bold text-base">
               01
             </div>
@@ -99,7 +106,10 @@ export default function HomePage() {
           </div>
 
           {/* Step 2 */}
-          <div className="noir-card p-6 space-y-3 relative overflow-hidden group">
+          <div 
+            className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
+            style={{ animationDelay: '200ms' }}
+          >
             <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-base">
               02
             </div>
@@ -110,7 +120,10 @@ export default function HomePage() {
           </div>
 
           {/* Step 3 */}
-          <div className="noir-card p-6 space-y-3 relative overflow-hidden group">
+          <div 
+            className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
+            style={{ animationDelay: '300ms' }}
+          >
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-mono font-bold text-base">
               03
             </div>
@@ -180,7 +193,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Featured Case Scenarios */}
+      {/* Featured Case Scenarios (Horizontal / Grid adaptive) */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -193,12 +206,13 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {MYSTERY_PRESETS.slice(0, 3).map((preset) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {MYSTERY_PRESETS.map((preset, idx) => (
             <Link
               key={preset.id}
               to={`/create?preset=${preset.id}`}
-              className="noir-card p-5 hover:border-amber-500/50 hover:shadow-xl hover:-translate-y-0.5 transition-all group"
+              className="noir-card p-5 hover:border-amber-500/50 hover:shadow-xl hover:-translate-y-0.5 transition-all group reveal-item"
+              style={{ animationDelay: `${idx * 70}ms` }}
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-2xl">{preset.emoji}</span>
@@ -223,17 +237,18 @@ export default function HomePage() {
 
       {/* Recent Investigations if any */}
       {recentCases.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4 pt-4 border-t border-slate-800/80">
           <h3 className="text-lg font-bold text-slate-200 flex items-center gap-2">
             <Terminal className="w-4 h-4 text-cyan-400" />
             <span>Precinct Case Log (Recent Cases)</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {recentCases.map((c) => (
+            {recentCases.map((c, idx) => (
               <Link
                 key={c._id}
                 to={c.status === 'active' ? `/cases/${c._id}` : `/cases/${c._id}/results`}
-                className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 flex items-center justify-between text-xs font-mono transition-colors"
+                className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 flex items-center justify-between text-xs font-mono transition-colors reveal-item"
+                style={{ animationDelay: `${idx * 50}ms` }}
               >
                 <div className="truncate mr-3">
                   <span className="text-slate-200 font-semibold block truncate">{c.title}</span>
