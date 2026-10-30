@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Auto-normalize API base URL to prevent endpoint mismatch
-let rawBaseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').trim();
+let rawBaseUrl = (import.meta.env.VITE_API_URL || 'https://ai-mystery-89yf.onrender.com/api').trim();
 rawBaseUrl = rawBaseUrl.replace(/\/+$/, '');
 const API_BASE_URL = rawBaseUrl.endsWith('/api') ? rawBaseUrl : `${rawBaseUrl}/api`;
 
