@@ -88,21 +88,26 @@ Respond with ONLY a valid, raw JSON object (no markdown, no backticks, no markdo
   try {
     const ai = new GoogleGenAI({ apiKey });
     
-    // Try modern model candidates in order
+    // Try modern model candidates in order with a 6-second timeout per attempt
     const candidateModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
     let response = null;
     let lastError = null;
 
+    const withTimeout = (promise, ms = 6000) => Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms))
+    ]);
+
     for (const modelName of candidateModels) {
       try {
-        response = await ai.models.generateContent({
+        response = await withTimeout(ai.models.generateContent({
           model: modelName,
           contents: prompt,
           config: {
             responseMimeType: 'application/json',
             temperature: 0.7,
           }
-        });
+        }), 6000);
         if (response?.text) break;
       } catch (mErr) {
         lastError = mErr;

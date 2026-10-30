@@ -25,22 +25,38 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Root welcome endpoint
+app.get('/', (req, res) => {
+  res.json({
+    name: '🕵️ AI Mystery Room Backend API',
+    status: 'online',
+    health: '/api/health',
+    message: 'Backend server is running. Visit your Vercel frontend URL to play the game!'
+  });
+});
+
+// Health check endpoint (available at both /api/health and /health)
+const healthHandler = (req, res) => {
   res.json({
     status: 'online',
     service: 'AI Mystery Room Backend',
     timestamp: new Date().toISOString(),
     geminiKeyConfigured: Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key')
   });
-});
+};
+app.get('/api/health', healthHandler);
+app.get('/health', healthHandler);
 
-// API Routes
+// API Routes mounted on both /api and root / for client flexibility
 app.use('/api', caseRoutes);
+app.use('/', caseRoutes);
 
 // 404 Handler
 app.use((req, res) => {
-  res.status(404).json({ success: false, error: 'Endpoint not found.' });
+  res.status(404).json({ 
+    success: false, 
+    error: `Endpoint not found: ${req.method} ${req.originalUrl}` 
+  });
 });
 
 // Error handling middleware
