@@ -88,15 +88,30 @@ Respond with ONLY a valid, raw JSON object (no markdown, no backticks, no markdo
   try {
     const ai = new GoogleGenAI({ apiKey });
     
-    // Using gemini-2.5-flash for speed and structured fidelity
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        temperature: 0.7,
+    // Try modern model candidates in order
+    const candidateModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+    let response = null;
+    let lastError = null;
+
+    for (const modelName of candidateModels) {
+      try {
+        response = await ai.models.generateContent({
+          model: modelName,
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+            temperature: 0.7,
+          }
+        });
+        if (response?.text) break;
+      } catch (mErr) {
+        lastError = mErr;
       }
-    });
+    }
+
+    if (!response && lastError) {
+      throw lastError;
+    }
 
     const responseText = response.text?.trim();
     if (!responseText) {
