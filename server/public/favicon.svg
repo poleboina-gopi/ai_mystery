@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <radialGradient id="lensGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Outer Detective Shield / Crest Background -->
+  <path d="M32 4 L56 14 V32 C56 46 45 56 32 60 C19 56 8 46 8 32 V14 Z" fill="#0f172a" stroke="url(#goldGrad)" stroke-width="2.5" />
+  
+  <!-- Magnifying Glass Lens with Glow -->
+  <circle cx="28" cy="27" r="14" fill="url(#lensGlow)" stroke="#f59e0b" stroke-width="2.5" />
+  
+  <!-- Crosshair Reticle -->
+  <line x1="28" y1="17" x2="28" y2="21" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="28" y1="33" x2="28" y2="37" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="18" y1="27" x2="22" y2="27" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="34" y1="27" x2="38" y2="27" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
+  <circle cx="28" cy="27" r="2" fill="#f59e0b" />
+
+  <!-- Magnifying Glass Handle -->
+  <path d="M38 37 L49 48" stroke="url(#goldGrad)" stroke-width="4.5" stroke-linecap="round" />
+  <circle cx="49" cy="48" r="2.5" fill="#f59e0b" />
+</svg>

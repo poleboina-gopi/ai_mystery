@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -5,6 +8,10 @@ import { connectDB } from './src/config/db.js';
 import caseRoutes from './src/routes/caseRoutes.js';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicDir = path.join(__dirname, 'public');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,15 +32,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root welcome endpoint
-app.get('/', (req, res) => {
-  res.json({
-    name: '🕵️ AI Mystery Room Backend API',
-    status: 'online',
-    health: '/api/health',
-    message: 'Backend server is running. Visit your Vercel frontend URL to play the game!'
-  });
-});
+// Serve static frontend assets if available
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+}
 
 // Health check endpoint (available at both /api/health and /health)
 const healthHandler = (req, res) => {
@@ -47,11 +49,30 @@ const healthHandler = (req, res) => {
 app.get('/api/health', healthHandler);
 app.get('/health', healthHandler);
 
-// API Routes mounted on both /api and root / for client flexibility
+// API Routes mounted on /api and root /
 app.use('/api', caseRoutes);
+
+// Fallback SPA routing for client: serve index.html for all non-API GET requests
+app.get('*', (req, res, next) => {
+  if (req.url.startsWith('/api') || req.url.startsWith('/health')) {
+    return next();
+  }
+  const indexPath = path.join(publicDir, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  res.json({
+    name: '🕵️ AI Mystery Room Backend API',
+    status: 'online',
+    health: '/api/health',
+    message: 'Backend server is running. Visit your frontend URL to play the game!'
+  });
+});
+
+// Also support legacy /cases fallback if not an SPA GET
 app.use('/', caseRoutes);
 
-// 404 Handler
+// 404 Handler for unrecognized API routes
 app.use((req, res) => {
   res.status(404).json({ 
     success: false, 
