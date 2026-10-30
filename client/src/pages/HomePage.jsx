@@ -28,13 +28,13 @@ export default function HomePage() {
       <div className="relative text-center max-w-3xl mx-auto space-y-6">
         
         {/* Glow pill badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-medium tracking-wide shadow-sm">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold tracking-wider uppercase shadow-sm">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Next-Generation AI Criminal Investigations</span>
+          <span>Interactive Criminal Investigation Bureau</span>
         </div>
 
-        {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-100 leading-[1.15]">
+        {/* Headline with Luxury Editorial Typography */}
+        <h1 className="font-serif text-4xl sm:text-6xl font-black tracking-tight text-slate-100 leading-[1.12]">
           Every Crime Leaves A Trail. <br className="hidden sm:inline" />
           <span className="bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent">
             Can You Unmask The Culprit?
@@ -42,22 +42,22 @@ export default function HomePage() {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
-          Step into the precinct. Generate infinite, logically coherent murder and heist mysteries powered by <strong className="text-slate-100 font-semibold">Gemini</strong>. Interrogate suspect alibis, inspect crime scene evidence, request precinct hints, and file your formal indictment.
+        <p className="font-sans text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
+          Step into the detective bureau. Generate logically watertight murder and grand theft mysteries. Interrogate suspect alibis, analyze physical and forensic evidence, request precinct hints, and file your formal indictment.
         </p>
 
         {/* Action CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
           <Link
             to="/create"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all btn-shimmer"
           >
             <span>Open New Investigation</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <a
             href="#rules"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-sm font-medium transition-colors"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 text-sm font-medium transition-colors hover:border-slate-600"
           >
             How Investigations Work
           </a>

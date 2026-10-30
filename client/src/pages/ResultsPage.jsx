@@ -95,8 +95,8 @@ export default function ResultsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 animate-fade-in relative">
       
-      {/* 1. Verdict Banner with Depth Glow */}
-      <div className={`noir-card p-8 text-center border-2 relative overflow-hidden ${
+      {/* 1. Verdict Banner with Depth Glow & Stamp Animation */}
+      <div className={`noir-card p-8 text-center border-2 relative overflow-hidden verdict-stamp ${
         isSolved 
           ? 'border-emerald-500/60 bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-950 noir-glow-emerald' 
           : 'border-red-500/60 bg-gradient-to-b from-red-950/40 via-slate-900 to-slate-950 noir-glow-crimson'
@@ -120,7 +120,7 @@ export default function ResultsPage() {
             <span className="text-xs font-mono tracking-widest uppercase font-bold text-slate-400">
               OFFICIAL VERDICT • {caseData.difficulty} DIFFICULTY
             </span>
-            <h1 className={`text-3xl sm:text-5xl font-black tracking-tight ${
+            <h1 className={`font-serif text-3xl sm:text-5xl font-black tracking-tight ${
               isSolved ? 'text-emerald-400' : 'text-red-400'
             }`}>
               {isSolved ? 'CASE SOLVED — CONVICTION SECURED!' : 'WRONGFUL ACCUSATION — PERPETRATOR AT LARGE!'}
@@ -321,7 +321,7 @@ export default function ResultsPage() {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
         <Link
           to="/create"
-          className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+          className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-display font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition-all btn-shimmer"
         >
           <RotateCcw className="w-4 h-4" />
           <span>Investigate Another Mystery</span>

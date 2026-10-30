@@ -126,7 +126,7 @@ export default function AccusationPage() {
           <Gavel className="w-3.5 h-3.5" />
           <span>Judicial Indictment Chamber</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-100">
+        <h1 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-slate-100">
           File Formal Accusation
         </h1>
         <p className="text-sm text-slate-400 font-mono leading-relaxed">
@@ -302,7 +302,7 @@ export default function AccusationPage() {
           <button
             type="submit"
             disabled={submitting || !selectedSuspectId}
-            className="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-red-600/20 active:scale-95 transition-all mx-auto disabled:opacity-50 disabled:pointer-events-none"
+            className="btn-shimmer w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-red-600/20 active:scale-95 transition-all mx-auto disabled:opacity-50 disabled:pointer-events-none"
           >
             <Gavel className="w-5 h-5" />
             <span>

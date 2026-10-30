@@ -13,7 +13,7 @@ export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = 
   return (
     <div className={`noir-card p-5 transition-all duration-300 relative overflow-hidden ${
       isDiscovered 
-        ? 'border-cyan-500/30 bg-slate-900/80 shadow-lg shadow-cyan-500/5' 
+        ? 'border-cyan-500/40 bg-slate-900/80 shadow-lg shadow-cyan-500/5 forensic-scanner' 
         : 'border-slate-800/90 bg-slate-950/60 hover:border-amber-500/40'
     }`}>
       

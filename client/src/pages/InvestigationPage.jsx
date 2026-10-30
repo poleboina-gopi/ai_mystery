@@ -247,7 +247,7 @@ export default function InvestigationPage() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+            <h1 className="font-serif text-2xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
               {mysteryCase.title}
             </h1>
 
@@ -351,7 +351,7 @@ export default function InvestigationPage() {
           <div className="pt-2">
             <button
               onClick={() => navigate(`/cases/${id}/accuse`)}
-              className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base inline-flex items-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
+              className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-display font-bold text-sm sm:text-base inline-flex items-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition-all btn-shimmer"
             >
               <span>Step into the Accusation Room</span>
               <ArrowRight className="w-4 h-4" />

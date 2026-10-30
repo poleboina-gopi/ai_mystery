@@ -53,7 +53,7 @@ export default function CreateMysteryPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 animate-fade-in">
       
       {/* Loading Overlay */}
-      {loading && <LoadingOverlay message="Generating Mystery with Gemini..." />}
+      {loading && <LoadingOverlay message="Commissioning Case Investigation..." />}
 
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
@@ -61,11 +61,11 @@ export default function CreateMysteryPage() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>Case Commission Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-100">
-          Commission An AI Mystery
+        <h1 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-slate-100">
+          Commission An Investigation
         </h1>
-        <p className="text-sm text-slate-400 leading-relaxed font-mono">
-          Configure the complexity tier and story premise. Gemini will construct the suspects, crime scene forensics, and logical clues.
+        <p className="text-sm text-slate-400 leading-relaxed font-sans">
+          Configure the complexity tier and incident premise. The forensic engine will construct the suspects, crime scene evidence, and logical clues.
         </p>
       </div>
 
@@ -163,10 +163,10 @@ export default function CreateMysteryPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/20 active:scale-98 transition-all disabled:opacity-50"
+            className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-display font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/20 active:scale-98 transition-all disabled:opacity-50 btn-shimmer"
           >
             <Sparkles className="w-5 h-5" />
-            <span>Generate Mystery with Gemini</span>
+            <span>Commission Mystery Investigation</span>
             <ArrowRight className="w-5 h-5 ml-1" />
           </button>
           <p className="text-center text-[11px] font-mono text-slate-400 mt-3">
