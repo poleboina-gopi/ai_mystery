@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Sparkles, Search, Award, HelpCircle, ArrowRight, CheckCircle2, ChevronRight, Terminal, SlidersHorizontal } from 'lucide-react';
+import { Crosshair, Zap, Microscope, Trophy, Lightbulb, ArrowRight, BadgeCheck, ChevronRight, Archive, SlidersHorizontal } from 'lucide-react';
 import { MYSTERY_PRESETS, DIFFICULTY_CONFIG } from '../utils/presets';
 import { listRecentCases } from '../api/client';
 
@@ -29,14 +29,15 @@ export default function HomePage() {
         
         {/* Glow pill badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold tracking-wider uppercase shadow-sm">
-          <Sparkles className="w-3.5 h-3.5" />
+          <Zap className="w-3.5 h-3.5" />
           <span>Interactive Criminal Investigation Bureau</span>
         </div>
 
-        {/* Headline with Luxury Editorial Typography */}
+        {/* Headline with Playfair Display — noir editorial */}
         <h1 className="font-serif text-4xl sm:text-6xl font-black tracking-tight text-slate-100 leading-[1.12]">
-          Every Crime Leaves A Trail. <br className="hidden sm:inline" />
-          <span className="bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent">
+          Every Crime Leaves A Trail.{' '}
+          <br className="hidden sm:inline" />
+          <span className="font-serif-italic bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent">
             Can You Unmask The Culprit?
           </span>
         </h1>
@@ -66,13 +67,13 @@ export default function HomePage() {
         {/* Trust Badges */}
         <div className="pt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-mono text-slate-400">
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 100% Watertight Logic
+            <BadgeCheck className="w-4 h-4 text-emerald-400" /> 100% Watertight Logic
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-amber-400" /> Backend Solution Privacy
+            <BadgeCheck className="w-4 h-4 text-amber-400" /> Backend Solution Privacy
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-cyan-400" /> 3 Difficulty Tiers
+            <BadgeCheck className="w-4 h-4 text-cyan-400" /> 3 Difficulty Tiers
           </span>
         </div>
 
@@ -96,7 +97,7 @@ export default function HomePage() {
             className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
             style={{ animationDelay: '100ms' }}
           >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-mono font-bold text-base">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-noir text-base">
               01
             </div>
             <h3 className="text-lg font-bold text-slate-100">1. Commission A Case</h3>
@@ -110,7 +111,7 @@ export default function HomePage() {
             className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
             style={{ animationDelay: '200ms' }}
           >
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-base">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-noir text-base">
               02
             </div>
             <h3 className="text-lg font-bold text-slate-100">2. Examine The Evidence</h3>
@@ -124,7 +125,7 @@ export default function HomePage() {
             className="noir-card p-6 space-y-3 relative overflow-hidden group reveal-item"
             style={{ animationDelay: '300ms' }}
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-mono font-bold text-base">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-noir text-base">
               03
             </div>
             <h3 className="text-lg font-bold text-slate-100">3. File The Indictment</h3>
@@ -141,7 +142,7 @@ export default function HomePage() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-6">
           <div>
             <h3 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-              <Award className="w-5 h-5 text-amber-400" />
+              <Trophy className="w-5 h-5 text-amber-400" />
               <span>Precinct Scoring Matrix</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-1">
@@ -239,7 +240,7 @@ export default function HomePage() {
       {recentCases.length > 0 && (
         <div className="space-y-4 pt-4 border-t border-slate-800/80">
           <h3 className="text-lg font-bold text-slate-200 flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-cyan-400" />
+            <Archive className="w-4 h-4 text-cyan-400" />
             <span>Precinct Case Log (Recent Cases)</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

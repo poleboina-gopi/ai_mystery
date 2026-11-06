@@ -21,8 +21,15 @@
     background-attachment: fixed;
   }
 
-  h1, h2, h3, h4 {
-    letter-spacing: -0.025em;
+  /* Playfair Display for editorial display headings */
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Keep h4+ in the UI font */
+  h4, h5, h6 {
+    letter-spacing: -0.01em;
   }
 }
 
@@ -45,6 +52,18 @@
 /* Glassmorphism & Noir Card Styles */
 .noir-card {
   @apply bg-slate-900/70 backdrop-blur-md border border-slate-800/80 rounded-2xl shadow-xl transition-all duration-300;
+}
+
+/* Special Elite typewriter font utility — for chapter titles, case IDs, dramatic labels */
+.font-noir {
+  font-family: 'Special Elite', Georgia, serif;
+  letter-spacing: 0.04em;
+}
+
+/* Playfair italic accent — for pull-quotes, hero subheads */
+.font-serif-italic {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
 }
 
 .noir-card-interactive {

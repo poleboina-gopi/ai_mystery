@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Sparkles, Shield, AlertTriangle, ArrowRight, Check } from 'lucide-react';
+import { Zap, Crosshair, Siren, ArrowRight, BadgeCheck } from 'lucide-react';
 import { MYSTERY_PRESETS, DIFFICULTY_CONFIG } from '../utils/presets';
 import { createCase } from '../api/client';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -58,7 +58,7 @@ export default function CreateMysteryPage() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-medium">
-          <Sparkles className="w-3.5 h-3.5" />
+          <Crosshair className="w-3.5 h-3.5" />
           <span>Case Commission Desk</span>
         </div>
         <h1 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-slate-100">
@@ -75,7 +75,7 @@ export default function CreateMysteryPage() {
         {/* Error Alert */}
         {error && (
           <div className="flex items-center gap-2.5 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
-            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+            <Siren className="w-4 h-4 text-red-400 shrink-0" />
             <p>{error}</p>
           </div>
         )}
@@ -165,7 +165,7 @@ export default function CreateMysteryPage() {
             disabled={loading}
             className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-display font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/20 active:scale-98 transition-all disabled:opacity-50 btn-shimmer"
           >
-            <Sparkles className="w-5 h-5" />
+            <Zap className="w-5 h-5" />
             <span>Commission Mystery Investigation</span>
             <ArrowRight className="w-5 h-5 ml-1" />
           </button>

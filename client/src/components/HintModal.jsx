@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HelpCircle, AlertCircle, X, ShieldAlert, Sparkles, CheckCircle } from 'lucide-react';
+import { Lightbulb, AlertCircle, X, BadgeCheck, Zap } from 'lucide-react';
 import { playHintSound } from '../utils/soundEffects';
 
 export default function HintModal({ 
@@ -40,7 +40,7 @@ export default function HintModal({
         {/* Modal Header */}
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-            <HelpCircle className="w-5 h-5" />
+            <Lightbulb className="w-5 h-5" />
           </div>
           <div>
             <h3 className="font-bold text-lg text-slate-100">Precinct Guidance & Hints</h3>
@@ -72,7 +72,7 @@ export default function HintModal({
               >
                 <div className="flex items-center justify-between text-[11px] font-mono text-amber-400">
                   <span className="flex items-center gap-1">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                    <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
                     Hint #{idx + 1}
                   </span>
                   <span className="text-slate-500 text-[10px]">Precinct Archive</span>
@@ -98,7 +98,7 @@ export default function HintModal({
                 disabled={isRequesting}
                 className="flex-1 py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-amber-500/20 disabled:opacity-50"
               >
-                <Sparkles className="w-4 h-4" />
+                <Zap className="w-4 h-4" />
                 <span>{isRequesting ? 'Decrypting Hint...' : 'Confirm (-10 Pts)'}</span>
               </button>
               <button
@@ -113,7 +113,7 @@ export default function HintModal({
               onClick={() => setConfirmPrompt(true)}
               className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 hover:border-amber-400 font-semibold text-xs flex items-center justify-center gap-2 transition-all"
             >
-              <HelpCircle className="w-4 h-4" />
+              <Lightbulb className="w-4 h-4" />
               <span>Request Next Hint ({remainingCount} left)</span>
             </button>
           )}

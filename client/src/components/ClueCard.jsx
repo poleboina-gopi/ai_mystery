@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Lock, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
+import { Microscope, Lock, CheckCircle2, MapPin, FlaskConical } from 'lucide-react';
 import { playClueSound } from '../utils/soundEffects';
 
 export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = false }) {
@@ -32,7 +32,7 @@ export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = 
         ) : (
           <span className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
             <Lock className="w-3 h-3" />
-            LOCKED
+            SEALED
           </span>
         )}
       </div>
@@ -41,7 +41,7 @@ export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = 
       {isDiscovered ? (
         <div className="space-y-2 animate-fade-in">
           <h4 className="font-bold text-sm text-slate-100 flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+            <FlaskConical className="w-4 h-4 text-cyan-400 shrink-0" />
             <span>{clue.title}</span>
           </h4>
           <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/50 p-3 rounded-xl border border-slate-800/80">
@@ -58,8 +58,8 @@ export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = 
             <h4 className="font-semibold text-sm text-slate-300">
               {clue.title || 'Unexamined Evidence'}
             </h4>
-            <p className="text-xs text-slate-400 line-clamp-2 mt-1 italic">
-              Forensic data hidden. Examine this location to uncover ballistic, physical, or cryptographic traces.
+            <p className="text-xs text-slate-400 line-clamp-2 mt-1 italic font-serif-italic">
+              Forensic data sealed. Examine this location to uncover ballistic, physical, or cryptographic traces.
             </p>
           </div>
 
@@ -68,8 +68,8 @@ export default function ClueCard({ clue, onDiscover = () => {}, isDiscovering = 
             disabled={isDiscovering}
             className="w-full mt-2 py-2 px-3.5 rounded-xl bg-slate-800/90 hover:bg-amber-500 hover:text-slate-950 text-amber-400 border border-amber-500/30 hover:border-amber-400 text-xs font-semibold flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 group shadow-sm disabled:opacity-50"
           >
-            <Search className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-            <span>{isDiscovering ? 'Analyzing Forensics...' : 'Inspect Location (+5 Pts)'}</span>
+            <Microscope className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+            <span>{isDiscovering ? 'Analyzing Forensics...' : 'Analyze Evidence (+5 Pts)'}</span>
           </button>
         </div>
       )}

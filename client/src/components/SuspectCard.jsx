@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, FileText, AlertTriangle, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { ScrollText, Siren, BadgeCheck } from 'lucide-react';
 
 export default function SuspectCard({ 
   suspect, 
@@ -35,7 +35,7 @@ export default function SuspectCard({
               ? 'bg-amber-500 border-amber-400 text-slate-950' 
               : 'border-slate-600 bg-slate-800/80 text-transparent'
           }`}>
-            <CheckCircle className="w-4 h-4" />
+            <BadgeCheck className="w-4 h-4" />
           </div>
         </div>
       )}
@@ -84,7 +84,7 @@ export default function SuspectCard({
               : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          <FileText className="w-3.5 h-3.5" />
+          <ScrollText className="w-3.5 h-3.5" />
           <span>Statement & Alibi</span>
         </button>
         <button
@@ -96,7 +96,7 @@ export default function SuspectCard({
               : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          <AlertTriangle className="w-3.5 h-3.5" />
+          <Siren className="w-3.5 h-3.5" />
           <span>Motive & Notes</span>
         </button>
       </div>
@@ -106,7 +106,7 @@ export default function SuspectCard({
         {activeTab === 'alibi' ? (
           <div>
             <span className="text-[10px] uppercase font-mono text-slate-400 block mb-1">Stated Alibi:</span>
-            <p className="italic bg-slate-950/40 p-2.5 rounded-lg border border-slate-800/80">
+            <p className="italic font-serif-italic bg-slate-950/40 p-2.5 rounded-lg border border-slate-800/80">
               "{suspect.alibi}"
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function SuspectCard({
         <span>Suspect ID: #{suspect.id}</span>
         {selected && (
           <span className="text-amber-400 font-semibold flex items-center gap-1">
-            <CheckCircle className="w-3.5 h-3.5" /> Target of Accusation
+            <BadgeCheck className="w-3.5 h-3.5" /> Target of Accusation
           </span>
         )}
       </div>

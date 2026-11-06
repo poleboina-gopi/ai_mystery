@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Sparkles } from 'lucide-react';
+import { Crosshair, Zap } from 'lucide-react';
 
 const STATUS_MESSAGES = [
   'Initializing criminal forensic architecture...',
@@ -36,13 +36,13 @@ export default function LoadingOverlay({ message = 'Synthesizing Crime Investiga
 
         {/* Center Badge */}
         <div className="relative w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-xl shadow-amber-500/20">
-          <Shield className="w-7 h-7 animate-pulse" />
+          <Crosshair className="w-7 h-7 animate-pulse" />
         </div>
       </div>
 
       {/* Main Title */}
       <h3 className="font-display text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2 mb-2">
-        <Sparkles className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
+        <Zap className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
         <span>{message}</span>
       </h3>
 

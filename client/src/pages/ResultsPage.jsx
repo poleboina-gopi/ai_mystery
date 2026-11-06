@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-  Award, 
-  CheckCircle2, 
+  Trophy, 
+  BadgeCheck, 
   XCircle, 
-  ShieldCheck, 
-  ShieldAlert, 
+  Eye, 
   RotateCcw, 
   Home, 
-  FileText, 
+  ScrollText, 
   Key,
   Users,
-  Search,
+  Microscope,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
+  Zap,
   MapPin,
   Check
 } from 'lucide-react';
@@ -110,7 +109,7 @@ export default function ResultsPage() {
         <div className="relative space-y-4">
           <div className="inline-flex p-3 rounded-2xl bg-slate-900/80 border border-slate-700/60 shadow-lg">
             {isSolved ? (
-              <CheckCircle2 className="w-12 h-12 text-emerald-400" />
+              <BadgeCheck className="w-12 h-12 text-emerald-400" />
             ) : (
               <XCircle className="w-12 h-12 text-red-400" />
             )}
@@ -146,7 +145,7 @@ export default function ResultsPage() {
       {/* 2. Staggered Scorecard Breakdown */}
       <div className="noir-card p-6 sm:p-8 border-slate-800">
         <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2 mb-6">
-          <Award className="w-5 h-5 text-amber-400" />
+          <Trophy className="w-5 h-5 text-amber-400" />
           <span>Precinct Score Breakdown</span>
         </h3>
 
@@ -215,7 +214,8 @@ export default function ResultsPage() {
         </div>
 
         <div className="space-y-2">
-          <h5 className="text-xs font-mono uppercase text-slate-300 font-semibold">
+          <h5 className="text-xs font-mono uppercase text-slate-300 font-semibold flex items-center gap-1.5">
+            <ScrollText className="w-3.5 h-3.5 text-amber-400" />
             Confession & Forensic Breakdown:
           </h5>
           <div className="bg-slate-950/60 p-5 rounded-xl border border-slate-800 text-slate-200 text-sm leading-relaxed whitespace-pre-line font-sans">
@@ -228,18 +228,18 @@ export default function ResultsPage() {
             <span className="text-[11px] font-mono uppercase text-slate-400">
               Your Recorded Deduction:
             </span>
-            <p className="italic text-xs text-slate-300 bg-slate-950/40 p-3 rounded-lg border border-slate-800">
+            <p className="italic font-serif-italic text-xs text-slate-300 bg-slate-950/40 p-3 rounded-lg border border-slate-800">
               "{caseData.playerAccusation.deduction}"
             </p>
           </div>
         )}
       </div>
 
-      {/* 4. SIDEWAYS MOVEMENT / HORIZONTAL SCROLL: Full Evidence Trail */}
+      {/* 4. HORIZONTAL SCROLL: Full Evidence Trail */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-mono font-bold text-slate-200">
-            <Search className="w-4 h-4 text-cyan-400" />
+            <Microscope className="w-4 h-4 text-cyan-400" />
             <span>Forensic Evidence Trail (Discovered vs Missed)</span>
           </div>
 

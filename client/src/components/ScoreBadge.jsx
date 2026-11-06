@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, Search, HelpCircle, ShieldAlert } from 'lucide-react';
+import { Trophy, Microscope, Lightbulb } from 'lucide-react';
 
 export default function ScoreBadge({ score = {}, difficulty = 'Medium', cluesDiscovered = 0, hintsUsed = 0, totalClues = 0 }) {
   const cluePoints = cluesDiscovered * 5;
@@ -11,13 +11,13 @@ export default function ScoreBadge({ score = {}, difficulty = 'Medium', cluesDis
       
       {/* Total Score Highlight */}
       <div className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold px-2.5 py-1 rounded-lg">
-        <Award className="w-3.5 h-3.5" />
+        <Trophy className="w-3.5 h-3.5" />
         <span>SCORE: {total} PTS</span>
       </div>
 
       {/* Clues Count */}
       <div className="flex items-center gap-1 text-slate-300">
-        <Search className="w-3.5 h-3.5 text-cyan-400" />
+        <Microscope className="w-3.5 h-3.5 text-cyan-400" />
         <span>Clues: {cluesDiscovered}/{totalClues}</span>
         <span className="text-[10px] text-emerald-400 font-semibold">(+{cluePoints})</span>
       </div>
@@ -26,7 +26,7 @@ export default function ScoreBadge({ score = {}, difficulty = 'Medium', cluesDis
 
       {/* Hints Count */}
       <div className="flex items-center gap-1 text-slate-300">
-        <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
+        <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
         <span>Hints Used: {hintsUsed}</span>
         {hintsUsed > 0 && (
           <span className="text-[10px] text-red-400 font-semibold">(-{hintPoints})</span>

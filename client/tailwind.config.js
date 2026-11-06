@@ -29,8 +29,9 @@ export default {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['"Outfit"', '"Plus Jakarta Sans"', 'sans-serif'],
-        serif: ['"Cinzel"', 'Georgia', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
         mono: ['"JetBrains Mono"', 'Fira Code', 'monospace'],
+        noir: ['"Special Elite"', 'Georgia', 'serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

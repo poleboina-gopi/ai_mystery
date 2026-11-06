@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { 
-  ShieldAlert, 
+  Eye, 
   ArrowLeft, 
   Gavel, 
-  AlertTriangle, 
-  CheckCircle, 
-  HelpCircle,
-  FileQuestion,
+  Siren, 
+  BadgeCheck, 
+  Lightbulb,
+  FolderSearch,
   ChevronLeft,
   ChevronRight,
   LayoutGrid,
   SlidersHorizontal,
-  Sparkles
+  Zap
 } from 'lucide-react';
 import { getCase, submitAccusation } from '../api/client';
 import SuspectCard from '../components/SuspectCard';
@@ -136,7 +136,7 @@ export default function AccusationPage() {
 
       {error && (
         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+          <Siren className="w-4 h-4 text-red-400 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -152,7 +152,7 @@ export default function AccusationPage() {
               </label>
               {selectedSuspect ? (
                 <span className="text-xs font-mono text-amber-400 font-semibold flex items-center gap-1 mt-0.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
                   Primary Indictment Target: <strong className="text-amber-300">{selectedSuspect.name}</strong> ({selectedSuspect.role})
                 </span>
               ) : (
@@ -212,7 +212,7 @@ export default function AccusationPage() {
             </div>
           </div>
 
-          {/* 4. SIDEWAYS MOVEMENT / HORIZONTAL POLICE LINEUP */}
+          {/* HORIZONTAL POLICE LINEUP */}
           {viewMode === 'lineup' ? (
             <div className="relative rounded-2xl border border-slate-800/80 p-4 sm:p-6 lineup-wall shadow-2xl overflow-hidden">
               <div className="absolute top-2 left-4 text-[10px] font-mono text-slate-600 uppercase tracking-widest pointer-events-none">
@@ -274,7 +274,7 @@ export default function AccusationPage() {
         <div className="noir-card p-4 sm:p-5 border-slate-800 text-xs font-mono">
           <div className="flex items-center justify-between text-slate-300 mb-2">
             <span className="font-bold flex items-center gap-1.5">
-              <FileQuestion className="w-4 h-4 text-cyan-400" />
+              <FolderSearch className="w-4 h-4 text-cyan-400" />
               Evidence Examined: {discoveredClues.length} of {mysteryCase.clues.length}
             </span>
             <span className="text-amber-400">
@@ -295,7 +295,7 @@ export default function AccusationPage() {
         {/* Irrevocable Warning & Submission Button */}
         <div className="noir-card p-6 border-red-500/30 bg-red-950/20 text-center space-y-4">
           <div className="flex items-center justify-center gap-2 text-xs font-mono text-red-300 font-semibold">
-            <AlertTriangle className="w-4 h-4 text-red-400" />
+            <Siren className="w-4 h-4 text-red-400" />
             <span>WARNING: INDICTMENT SUBMISSION IS FINAL AND CANNOT BE UNDONE</span>
           </div>
 
